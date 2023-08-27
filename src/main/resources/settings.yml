@@ -1,0 +1,132 @@
+options:
+  # Particles that will appear around the lodestone, depending on its status
+  # Format: <particle> <dx> <dy> <dz> <speed> <amount>
+  # Particle list: https://github.com/ByteZ1337/ParticleLib/blob/master/src/main/java/xyz/xenondevs/particle/ParticleEffect.java
+  idle-particles:
+    public: "FALLING_DUST 0.4 0.4 0.4 0.01 10 block=WHITE_CONCRETE"
+    private: "FALLING_DUST 0.4 0.4 0.4 0.01 10 block=RED_CONCRETE"
+    global: "FALLING_DUST 0.4 0.4 0.4 0.01 10 block=LIGHT_BLUE_CONCRETE"
+  # Every x ticks, the idle particles will appear around a warping lodestone
+  # Enter 0 to disable this feature
+  idle-particles-every: 40
+  # Format: <sound> <volume> <pitch(0-2)>
+  # Sound list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+  page-turn-sound: "BLOCK_LEVER_CLICK 5 2"
+  menu-navigate-sound: "ENTITY_EXPERIENCE_ORB_PICKUP 5 2"
+  settings-icon-sound: "BLOCK_LEVER_CLICK 5 2"
+  # Also warp other non-player living entities that are standing on the lodestone
+  # One player will still need to stand on the lodestone to activate it
+  # so the player has to warp with said entity for it to work
+  warp-entities: false
+  # Entities in this radius of the lodestone will be teleported
+  # Value can be a double/float
+  # Leave it to 1 if the entities have to be on top of it
+  warp-entities-radius: 1
+  # Add a warp to both lodestones involved in a linking process
+  # thus allowing them to warp to each other
+  # If false, the link will be one-way
+  mutual-link: true
+
+warp-name:
+  # Allow players to add color codes to their warp name
+  # If on false, not even hex colors will be allowed
+  colors: true
+  # Allow players to add hex colors to their warp name, as well as color codes
+  # HEX colors can be added like this: "[#8c8c8c]the end"
+  # Pro tip: You can also use hex colors in config messages and items
+  hex-colors: true
+  # Ban certain words or characters from being used in warp names
+  # Uses RegEx patterns!
+  blacklist:
+    - "bad words"
+    - "([bB]|[tT])anned"
+
+# The warmup time in seconds before the warp happens is
+# calculated with this formula: (timing * repeat * cycle) / 20
+warping-effects:
+  # The particles that the circle will be made out of
+  particle: "FALLING_DUST 0 0 0 0.1 2 block=PURPLE_CONCRETE"
+  # The amount of dots that will form the circle
+  amount: 40
+  # The amount of times the circle will appear
+  repeat: 6
+  # The amount of times to cycle through the animation
+  cycle: 3
+  # The circle will grow outwards by this amount
+  multiplier: 0.4
+  # The circle will keep raising by this value with each frame
+  y-multiplier: 0.8
+  # Offset the starting particle location relative to the top of the lodestone
+  y-offset: 0
+  # The amount of delay between each circle display, in ticks
+  timing: 5
+  warp-sound: "ENTITY_EVOKER_PREPARE_SUMMON 5 2"
+  warp-fail-sound: "BLOCK_BEACON_DEACTIVATE 5 1.5"
+  warp-fail-particle: "EXPLOSION_NORMAL 0.5 0 0.5 0.5 20"
+  warp-particle: "FIREWORKS_SPARK 0.5 0 0.5 0.5 30"
+  # The pitch will keep increasing with each circle
+  # so leave this to the pitch you want to start from
+  charging-sound: "BLOCK_BEACON_AMBIENT 5 1"
+
+inventories:
+  'main':
+    title: "$owner$'s Lodestone"
+    own-title: "Lodestone ($x, $y, $z)"
+    items:
+      'o': "id:black_stained_glass_pane name:_ unbreaking:1 hideFlags"
+      # Don't change the UIButtonIDs!
+      'L': "id:compass nbt-string:UIButtonID:link name:&f&k**_&b&lLink_To_Lodestone_&f&k** lore:&8Click_to_start||&f&nDescription|&7Link_this_lodestone_to_another|&7player's_warping_lodestone_or|&7even_another_one_of_your_own!||&cIf_the_lodestone_is_private,_you|&cwill_need_permission_from_the_owner"
+      'P': "id:ender_pearl nbt-string:UIButtonID:public name:&f&k**_&b&lPublic_Warps_&f&k** lore:&8Click_to_use||&f&nDescription|&7A_list_of_all_public_lodestone|&7warps_which_you_are_linked_to"
+      'p': "id:ender_pearl nbt-string:UIButtonID:private name:&f&k**_&b&lPrivate_Warps_&f&k** lore:&8Click_to_use||&f&nDescription|&7A_list_of_all_private_lodestone|&7warps_which_you_are_linked_to"
+      'G': "id:ender_eye nbt-string:UIButtonID:global name:&f&k**_&b&lGlobal_Warps_&f&k** lore:&8Click_to_use||&f&nDescription|&7A_list_of_warps_that_are_available|&7for_all_warping_lodestones!||&cYou_don't_need_to_be_linked|&cto_the_warps_to_use_them"
+      's': "id:comparator nbt-string:UIButtonID:settings name:&eLodestone_Settings lore:&8Click_to_manage||&f&nDescription|&7Here_you_can_manage_the_status|&7of_your_lodestone,_whether_you|&7want_it_to_be_private_or_public!"
+    layout:
+      - "o o o o o o o o o"
+      - "- - - - - - - - -"
+      - "- L - P - p - G -"
+      - "- - - - - - - - -"
+      - "o o o o s o o o o"
+  'settings':
+    title: "Lodestone Settings"
+    items:
+      's': "id:iron_door nbt-string:UIButtonID:status name:&eLodestone_Status:&f_$status$ lore:&8Click_to_toggle||&f&nDescription|&7By_setting_your_lodestone_to|&7private,_players_will_need|&7permission_to_link_to_it!"
+      'p': "id:book nbt-string:UIButtonID:perm name:&ePermission_List lore:&8Click_to_change||&f&nDescription|&7Add_or_remove_players_from|&7connecting_to_the_lodestone||&cOnly_works_on_private_mode!"
+    layout:
+      - "s p - - - - - - -"
+  'warps-list':
+    public-title: "» Public warps"
+    private-title: "» Private warps"
+    global-title: "» Global warps"
+    rows: 3
+    items-per-page: 21
+    next-page-button-slots: [8, 17, 26]
+    previous-page-button-slots: [0, 9, 18]
+    skipping-points: [0, 8, 9, 17, 18, 26]
+    next-page-button: "id:lime_stained_glass_pane name:&f&lNEXT_PAGE"
+    previous-page-button: "id:yellow_stained_glass_pane name:&f&lPREVIOUS_PAGE"
+    empty-button: "id:air"
+
+    warp-item: "id:flower_banner_pattern hideFlags nbt-string:UIButtonID:warp nbt-string:WarpTo:$loc$ name:&7&lWarp:_&f$name$ lore:&8»_[#8c8c8c]Owner:_[#cfcfcf]$owner$|&8»_[#8c8c8c]Coordinates:_[#cfcfcf]$coord$|&8»_[#8c8c8c]Safe:_[#cfcfcf]$safe$||[#3e4aad]Middle_click_to_delete|&9&lCLICK_TO_WARP"
+    global-warp-item: "id:flower_banner_pattern hideFlags nbt-string:UIButtonID:warp nbt-string:WarpTo:$loc$ name:&d&lAdmin_Warp:_[#b32db0]$name$ lore:&8»_[#8c8c8c]Owner:_[#cfcfcf]$owner$|&8»_[#8c8c8c]Coordinates:_[#cfcfcf]$coord$|&8»_[#8c8c8c]Safe:_[#cfcfcf]$safe$||&9&lCLICK_TO_WARP"
+    admin-global-warp-item: "id:flower_banner_pattern hideFlags nbt-string:UIButtonID:warp nbt-string:WarpTo:$loc$ name:&d&lAdmin_Warp:_[#b32db0]$name$ lore:&8»_[#8c8c8c]Owner:_[#cfcfcf]$owner$|&8»_[#8c8c8c]Coordinates:_[#cfcfcf]$coord$|&8»_[#8c8c8c]Safe:_[#cfcfcf]$safe$||&cOnly_admins_can_delete_global|&cwarps,_you_have_the_permission|&cso_don't_worry!||[#3e4aad]Middle_click_to_delete|&9&lCLICK_TO_WARP"
+recipes:
+  # Don't remove this recipe or change its name. You can still edit the rest though
+  'warping_lodestone':
+    items:
+      'n': "id:netherite_ingot"
+      's': "id:chiseled_stone_bricks"
+      'p': "id:ender_pearl"
+    matrix:
+      - "s p s"
+      - "p n p"
+      - "s p s"
+    result: "id:lodestone nbt-int:WarpingLodestone:1 unbreaking:1 hideFlag:enchants name:&dWarping_Lodestone lore:&8Place_down_to_use||&f&nDescription|&7This_lodestone_can_be_used_to_warp|&7to_other_warping_lodestones_that|&7are_linked_together!"
+  'warping_lodestone_crafted':
+    items:
+      'l': "id:lodestone"
+      'p': "id:ender_pearl"
+    matrix:
+      - "- p -"
+      - "p l p"
+      - "- p -"
+    result: "id:lodestone nbt-int:WarpingLodestone:1 unbreaking:1 hideFlag:enchants name:&dWarping_Lodestone lore:&8Place_down_to_use||&f&nDescription|&7This_lodestone_can_be_used_to_warp|&7to_other_warping_lodestones_that|&7are_linked_together!"

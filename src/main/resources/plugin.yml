@@ -1,0 +1,7 @@
+name: LodestoneWarp
+version: ${project.version}
+main: io.github.idoomful.lodestonewarp.DMain
+api-version: 1.16
+authors: [iDoomful]
+softdepend: [PlaceholderAPI]
+description: Similar to the Waystones mod, lodestones can now be used as warping points with public, private and official global warps. Requested by rebelmythik
