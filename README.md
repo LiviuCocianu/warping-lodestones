@@ -9,6 +9,11 @@ Similar to the [Waystones](https://www.curseforge.com/minecraft/mc-mods/waystone
 * It was made and tested on Minecraft version 1.17.1 only!
 * There is optional [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) support for all config files
 
+## Configuration files
+[Messages](https://github.com/LiviuCocianu/warping-lodestones/blob/master/src/main/resources/messages.yml)
+ | 
+[Settings](https://github.com/LiviuCocianu/warping-lodestones/blob/master/src/main/resources/settings.yml)
+
 ## Commands and permissions
 ```
 /lwarp reload
